@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Add Member - {{ team.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="mb-8">
+        <a href="{% url 'team_detail' team_id=team.pk %}" class="text-primary-600 hover:text-primary-700 text-sm">
+            <i class="fas fa-arrow-left mr-1"></i> Back to {{ team.name }}
+        </a>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-4">Add Member</h1>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-6">
+                <label for="id_username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="mb-6">
+                <label for="id_role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
+                {{ form.role }}
+                {% if form.role.errors %}
+                <p class="text-red-500 text-sm mt-1">{{ form.role.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <a href="{% url 'team_detail' team_id=team.pk %}" class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                    Cancel
+                </a>
+                <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                    Add Member
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

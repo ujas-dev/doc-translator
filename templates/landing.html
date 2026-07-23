@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Doc Translator - Privacy-First Document Translation{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <!-- Hero Section -->
+    <div class="text-center py-16">
+        <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            Translate Documents
+            <span class="text-primary-600 dark:text-primary-400">While Preserving Layout</span>
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
+            The privacy-first, AI-native document translation platform. Translate PDFs, DOCX, and more while keeping your formatting intact. Zero data leaving your network.
+        </p>
+        <div class="flex justify-center space-x-4">
+            {% if user.is_authenticated %}
+                <a href="{% url 'home' %}" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors text-lg">
+                    <i class="fas fa-upload mr-2"></i> Start Translating
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors text-lg">
+                    <i class="fas fa-rocket mr-2"></i> Get Started Free
+                </a>
+                <a href="{% url 'login' %}" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold py-3 px-8 rounded-lg border border-gray-300 dark:border-gray-600 transition-colors text-lg">
+                    Sign In
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 py-16">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Privacy First</h3>
+            <p class="text-gray-600 dark:text-gray-400">Self-hostable. Your documents never leave your network. GDPR compliant by design.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-paint-brush text-green-600 dark:text-green-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Layout Preservation</h3>
+            <p class="text-gray-600 dark:text-gray-400">Translate PDFs and DOCX files while preserving fonts, formatting, images, and structure.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-book text-purple-600 dark:text-purple-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Glossary Support</h3>
+            <p class="text-gray-600 dark:text-gray-400">Enforce consistent terminology with custom glossaries. Import CSV, TBX, or XLIFF formats.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-yellow-100 dark:bg-yellow-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-database text-yellow-600 dark:text-yellow-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Translation Memory</h3>
+            <p class="text-gray-600 dark:text-gray-400">Reuse previous translations with fuzzy matching. Save time and ensure consistency.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-users text-red-600 dark:text-red-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Team Collaboration</h3>
+            <p class="text-gray-600 dark:text-gray-400">Share glossaries and translation memories with your team. Role-based access control.</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <div class="w-12 h-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-4">
+                <i class="fas fa-code text-indigo-600 dark:text-indigo-400 text-xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Developer API</h3>
+            <p class="text-gray-600 dark:text-gray-400">RESTful API with OpenAPI documentation. Integrate translation into your workflow.</p>
+        </div>
+    </div>
+
+    <!-- Supported Formats -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 mb-16">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">Supported Formats</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+            <span class="px-4 py-2 bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 rounded-lg font-medium">
+                <i class="fas fa-file-pdf mr-2"></i> PDF
+            </span>
+            <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg font-medium">
+                <i class="fas fa-file-word mr-2"></i> DOCX
+            </span>
+            <span class="px-4 py-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 rounded-lg font-medium">
+                <i class="fas fa-file-excel mr-2"></i> XLSX
+            </span>
+            <span class="px-4 py-2 bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 rounded-lg font-medium">
+                <i class="fas fa-file-powerpoint mr-2"></i> PPTX
+            </span>
+            <span class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium">
+                <i class="fas fa-file-alt mr-2"></i> TXT
+            </span>
+            <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded-lg font-medium">
+                <i class="fas fa-file-code mr-2"></i> HTML
+            </span>
+            <span class="px-4 py-2 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-lg font-medium">
+                <i class="fas fa-file-csv mr-2"></i> CSV
+            </span>
+            <span class="px-4 py-2 bg-pink-100 dark:bg-pink-900/50 text-pink-700 dark:text-pink-300 rounded-lg font-medium">
+                <i class="fas fa-file-image mr-2"></i> Images (OCR)
+            </span>
+        </div>
+    </div>
+
+    <!-- Pricing CTA -->
+    <div class="text-center py-16">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Simple, Transparent Pricing</h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">Start for free. Upgrade when you need more.</p>
+        <div class="flex justify-center space-x-8">
+            <div class="text-center">
+                <p class="text-4xl font-bold text-gray-900 dark:text-white">$0</p>
+                <p class="text-gray-500 dark:text-gray-400">/month</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">5 docs/month</p>
+            </div>
+            <div class="text-center border-l border-gray-200 dark:border-gray-700 pl-8">
+                <p class="text-4xl font-bold text-primary-600 dark:text-primary-400">$19</p>
+                <p class="text-gray-500 dark:text-gray-400">/month</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Unlimited docs</p>
+            </div>
+        </div>
+        <a href="{% url 'pricing' %}" class="inline-block mt-8 text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium">
+            View full pricing <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

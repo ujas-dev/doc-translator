@@ -1,0 +1,28 @@
+# Code Owners for Doc Translator
+# These owners will be automatically requested for review
+# when a pull request modifies matching files.
+#
+# Format: <pattern> <@owner1> <@owner2> ...
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything
+* @your-username
+
+# Django settings and configuration
+config/ @your-username
+
+# CI/CD
+.github/ @your-username
+
+# Docker
+Dockerfile @your-username
+docker-compose*.yml @your-username
+.devcontainer/ @your-username
+
+# Core business logic
+apps/documents/ @your-username
+apps/translation/ @your-username
+apps/billing/ @your-username
+
+# SDK
+sdk/ @your-username

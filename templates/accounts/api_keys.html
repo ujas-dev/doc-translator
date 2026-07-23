@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}API Keys - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">API Keys</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Manage your API keys for programmatic access</p>
+    </div>
+
+    <!-- Create New Key -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Create New API Key</h2>
+        <form method="post" class="flex items-end gap-4">
+            {% csrf_token %}
+            <div class="flex-1">
+                <label for="id_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Key Name</label>
+                {{ form.name }}
+            </div>
+            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors whitespace-nowrap">
+                <i class="fas fa-plus mr-2"></i> Create Key
+            </button>
+        </form>
+    </div>
+
+    <!-- Existing Keys -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Your API Keys</h2>
+        </div>
+        {% if keys %}
+        <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            {% for key in keys %}
+            <div class="px-6 py-4 flex items-center justify-between">
+                <div class="flex-1">
+                    <div class="flex items-center space-x-3">
+                        <p class="font-medium text-gray-900 dark:text-white">{{ key.name }}</p>
+                        {% if key.is_active %}
+                            <span class="bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium px-2 py-0.5 rounded-full">Active</span>
+                        {% else %}
+                            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-medium px-2 py-0.5 rounded-full">Inactive</span>
+                        {% endif %}
+                    </div>
+                    <div class="mt-1 flex items-center space-x-4">
+                        <code class="text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded font-mono">{{ key.masked_key }}</code>
+                        <button onclick="copyKey('{{ key.key }}')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-sm">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <span class="text-xs text-gray-400 dark:text-gray-500">Created {{ key.created_at|timesince }} ago</span>
+                    </div>
+                </div>
+                <a href="{% url 'delete-api-key' key_id=key.pk %}" class="text-red-500 hover:text-red-600 ml-4" onclick="return confirm('Delete this API key?')">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="px-6 py-8 text-center">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                <i class="fas fa-key text-gray-400"></i>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400">No API keys yet. Create one above.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- API Usage Info -->
+    <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-6">
+        <h3 class="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+            <i class="fas fa-info-circle mr-1"></i> API Usage
+        </h3>
+        <p class="text-sm text-blue-700 dark:text-blue-300">
+            Use your API key in the <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">Authorization</code> header:
+        </p>
+        <pre class="mt-2 bg-blue-100 dark:bg-blue-800 text-blue-900 dark:text-blue-100 text-xs p-3 rounded-lg overflow-x-auto">Authorization: Bearer YOUR_API_KEY
+
+# Example with curl:
+curl -H "Authorization: Bearer YOUR_API_KEY" \
+     -F "source_file=@document.pdf" \
+     -F "target_language=hi" \
+     http://localhost:8010/api/jobs/</pre>
+    </div>
+</div>
+
+<script>
+function copyKey(key) {
+    navigator.clipboard.writeText(key).then(() => {
+        alert('API key copied to clipboard');
+    });
+}
+</script>
+{% endblock %}

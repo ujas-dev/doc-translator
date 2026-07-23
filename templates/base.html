@@ -1,0 +1,172 @@
+{% load static %}
+{% load plan_tags %}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Doc Translator{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/client-side-templates.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
+                    }
+                }
+            }
+        }
+    </script>
+    {% if POSTHOG_KEY %}
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('{{ POSTHOG_KEY }}', {api_host: '{{ POSTHOG_HOST|default:"https://app.posthog.com" }}'});
+    </script>
+    {% endif %}
+</head>
+<body class="h-full bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-full">
+        <!-- Navigation -->
+        <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="{% url 'home' %}" class="flex items-center space-x-2">
+                            <i class="fas fa-language text-primary-600 text-2xl"></i>
+                            <span class="text-xl font-bold text-gray-900 dark:text-white">Doc Translator</span>
+                        </a>
+                        <div class="hidden md:ml-8 md:flex md:space-x-4">
+                            <a href="{% url 'home' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-upload mr-1"></i> Translate
+                            </a>
+                            <a href="{% url 'dashboard' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-chart-bar mr-1"></i> Dashboard
+                            </a>
+                            {% if user.is_authenticated %}
+                            {% has_plan_feature "glossary" as has_glossary %}
+                            {% has_plan_feature "tm" as has_tm %}
+                            {% has_plan_feature "teams" as has_teams %}
+                            {% has_plan_feature "audit" as has_audit %}
+                            {% if has_glossary %}
+                            <a href="{% url 'glossary_list' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-book mr-1"></i> Glossary
+                            </a>
+                            {% endif %}
+                            {% if has_tm %}
+                            <a href="{% url 'tm_list' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-database mr-1"></i> TM
+                            </a>
+                            {% endif %}
+                            {% if has_teams %}
+                            <a href="{% url 'team_list' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-users mr-1"></i> Teams
+                            </a>
+                            {% endif %}
+                            {% if has_audit %}
+                            <a href="{% url 'audit_list' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-history mr-1"></i> Audit
+                            </a>
+                            {% endif %}
+                            {% endif %}
+                            <a href="{% url 'pricing' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-tag mr-1"></i> Pricing
+                            </a>
+                            {% if user.is_staff %}
+                            <a href="{% url 'status-detail' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-heartbeat mr-1"></i> Status
+                            </a>
+                            <a href="{% url 'admin:index' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium">
+                                <i class="fas fa-cog mr-1"></i> Admin
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="dark-toggle" class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                            <i class="fas fa-moon dark:hidden"></i>
+                            <i class="fas fa-sun hidden dark:inline"></i>
+                        </button>
+                        {% if user.is_authenticated %}
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" class="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                                        <i class="fas fa-user text-primary-600 dark:text-primary-400"></i>
+                                    </div>
+                                    <span>{{ user.username }}</span>
+                                </button>
+                                <div x-show="open" x-cloak @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
+                                    <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <i class="fas fa-user-cog mr-2"></i> Profile
+                                    </a>
+                                    <a href="{% url 'api-keys' %}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                        <i class="fas fa-key mr-2"></i> API Keys
+                                    </a>
+                                    <hr class="my-1 border-gray-200 dark:border-gray-700">
+                                    <form method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 text-sm font-medium">
+                                Login
+                            </a>
+                            <a href="{% url 'register' %}" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                Sign Up
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            {% for message in messages %}
+            <div class="rounded-lg p-4 mb-4 {% if message.tags == 'success' %}bg-green-50 dark:bg-green-900/30 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-800{% elif message.tags == 'error' %}bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-200 border border-red-200 dark:border-red-800{% else %}bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-800{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="flex items-center space-x-2 text-gray-500 dark:text-gray-400 text-sm">
+                        <i class="fas fa-language"></i>
+                        <span>Doc Translator &copy; 2026</span>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm">
+                        <a href="{% url 'pricing' %}" class="text-gray-500 dark:text-gray-400 hover:text-primary-600">Pricing</a>
+                        <a href="{% url 'swagger-ui' %}" class="text-gray-500 dark:text-gray-400 hover:text-primary-600">API Docs</a>
+                        <a href="{% url 'help_page' %}" class="text-gray-500 dark:text-gray-400 hover:text-primary-600">Help</a>
+                        <a href="mailto:support@doctranslator.com" class="text-gray-500 dark:text-gray-400 hover:text-primary-600">Support</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/htmx-utils.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

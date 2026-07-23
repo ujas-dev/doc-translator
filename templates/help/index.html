@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Help & Support - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Help & Support</h1>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-rocket text-xl text-primary-600 dark:text-primary-400"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Getting Started</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                Upload a document, select your target language, and click Translate.
+                We support PDF, DOCX, TXT, CSV, XLSX, PPTX, HTML, Markdown, and images.
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-book text-xl text-primary-600 dark:text-primary-400"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Glossaries</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                Create glossaries to ensure consistent terminology. Import from CSV or add terms manually.
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-database text-xl text-primary-600 dark:text-primary-400"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Translation Memory</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                Previous translations are stored automatically. Future similar texts will be translated faster and more consistently.
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                <i class="fas fa-users text-xl text-primary-600 dark:text-primary-400"></i>
+            </div>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Teams</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                Create teams to share glossaries and translation memories with your colleagues.
+            </p>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+
+        <div class="space-y-4">
+            <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h3 class="font-medium text-gray-900 dark:text-white mb-2">What file formats are supported?</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    We support PDF, DOCX, TXT, CSV, XLSX, PPTX, HTML, Markdown, and image files (JPG, PNG, TIFF, BMP).
+                </p>
+            </div>
+
+            <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h3 class="font-medium text-gray-900 dark:text-white mb-2">How does layout preservation work?</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    For PDF and DOCX files, we extract text, translate it, and then reconstruct the document with the same fonts, spacing, and formatting.
+                </p>
+            </div>
+
+            <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h3 class="font-medium text-gray-900 dark:text-white mb-2">Is my data secure?</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    Yes. All files are encrypted in transit and at rest. We never share your documents with third parties.
+                </p>
+            </div>
+
+            <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h3 class="font-medium text-gray-900 dark:text-white mb-2">Can I use the API?</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    Yes! We provide a REST API for programmatic access. Check the <a href="{% url 'schema' %}" class="text-primary-600 hover:underline">API documentation</a> for details.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-medium text-gray-900 dark:text-white mb-2">How do translation styles work?</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    Choose from 5 styles: Faithful (literal), Fluid (natural), Creative (adaptive), Formal (business), or Casual (conversational).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p class="text-gray-600 dark:text-gray-400 mb-4">Still have questions?</p>
+        <a href="mailto:support@doctranslator.com" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+            <i class="fas fa-envelope mr-2"></i> Contact Support
+        </a>
+    </div>
+</div>
+{% endblock %}

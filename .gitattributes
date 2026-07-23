@@ -1,0 +1,55 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Python
+*.py text diff=python
+*.pyi text
+*.pyx text
+*.pxd text
+
+# Django templates
+*.html text diff=html
+
+# JavaScript/CSS
+*.js text
+*.css text
+*.ts text
+*.tsx text
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+
+# YAML
+*.yml text
+*.yaml text
+
+# Markdown
+*.md text diff=markdown
+
+# Docker
+Dockerfile text
+docker-compose*.yml text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Lock files (should be committed)
+poetry.lock text
+package-lock.json text
+
+# Large files (LFS candidates for future)
+# *.pdf filter=lfs diff=lfs merge=lfs -text
+# media/** filter=lfs diff=lfs merge=lfs -text

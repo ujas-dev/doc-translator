@@ -1,0 +1,126 @@
+# === SECURITY ===
+.env
+.env.local
+.env.production
+.env.staging
+secrets/
+*.pem
+*.key
+
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+*.whl
+.Python
+develop-eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+MANIFEST
+
+# === DJANGO ===
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+*.log
+staticfiles/
+media/uploads/
+media/outputs/
+media/batch_uploads/
+media/batch_outputs/
+/uploads/
+
+# === CELERY ===
+celerybeat-schedule
+celerybeat.pid
+
+# === ENVIRONMENTS ===
+.venv/
+venv/
+ENV/
+env.bak/
+.venv.bak/
+
+# === TESTING & COVERAGE ===
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+junit.xml
+test-reports/
+
+# === MYPY ===
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# === RUFF ===
+.ruff_cache/
+
+# === TYPE CHECKERS ===
+.pytype/
+pytype_output/
+
+# === TRANSLATIONS ===
+*.mo
+*.pot
+locale/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.classpath
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# === JUPYTER ===
+.ipynb_checkpoints
+
+# === SPHINX ===
+docs/_build/
+
+# === DOCKER (dev overrides) ===
+docker-compose.override.yml
+
+# === NODE ===
+node_modules/
+npm-debug.log*
+.npm
+
+# === DATA (persistent volumes, never commit) ===
+data/
+
+# === DOCUMENT BKP ===
+doc_bkp/
+
+# === PYENV ===
+.python-version

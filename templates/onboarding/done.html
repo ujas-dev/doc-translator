@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load plan_tags %}
+
+{% block title %}All Set! - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center px-4">
+    <div class="max-w-lg w-full text-center">
+        <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-3xl text-green-600 dark:text-green-400"></i>
+        </div>
+
+        <div class="mb-6">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                <div class="w-8 h-1 bg-primary-600 rounded"></div>
+                <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                <div class="w-8 h-1 bg-primary-600 rounded"></div>
+                <div class="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            You're All Set!
+        </h1>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-8 text-lg">
+            Start translating documents now. Upload a file to see Doc Translator in action.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="step" value="finish">
+            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-medium text-lg transition-colors">
+                <i class="fas fa-upload mr-2"></i> Start Translating
+            </button>
+        </form>
+
+        {% has_plan_feature "glossary" as show_glossary %}
+        {% has_plan_feature "tm" as show_tm %}
+        <div class="mt-8 grid gap-4 text-sm {% if show_glossary and show_tm %}grid-cols-3{% elif show_glossary or show_tm %}grid-cols-2{% else %}grid-cols-1 max-w-xs mx-auto{% endif %}">
+            {% if show_glossary %}
+            <a href="{% url 'glossary_list' %}" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <i class="fas fa-book text-primary-600 mb-2"></i>
+                <p class="text-gray-900 dark:text-white font-medium">Glossaries</p>
+            </a>
+            {% endif %}
+            {% if show_tm %}
+            <a href="{% url 'tm_list' %}" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <i class="fas fa-database text-primary-600 mb-2"></i>
+                <p class="text-gray-900 dark:text-white font-medium">Translation Memory</p>
+            </a>
+            {% endif %}
+            <a href="{% url 'help_page' %}" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <i class="fas fa-question-circle text-primary-600 mb-2"></i>
+                <p class="text-gray-900 dark:text-white font-medium">Help</p>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

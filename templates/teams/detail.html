@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ team.name }} - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mb-8">
+        <a href="{% url 'team_list' %}" class="text-primary-600 hover:text-primary-700 text-sm">
+            <i class="fas fa-arrow-left mr-1"></i> Back to Teams
+        </a>
+        <div class="flex justify-between items-center mt-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ team.name }}</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">
+                    <i class="fas fa-users mr-1"></i> {{ members|length }} members
+                    <span class="mx-2">|</span>
+                    Created {{ team.created_at|timesince }} ago
+                </p>
+            </div>
+            {% if user_membership.role == 'owner' %}
+            <a href="{% url 'team_settings' team_id=team.pk %}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                <i class="fas fa-cog text-xl"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Members</h2>
+                {% if user_membership.role in 'owner,admin' %}
+                <a href="{% url 'team_add_member' team_id=team.pk %}" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                    <i class="fas fa-plus mr-1"></i> Add
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="space-y-3">
+                {% for member in members %}
+                <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+                            <span class="text-primary-600 dark:text-primary-400 font-medium">{{ member.user.username|first|upper }}</span>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ member.user.username }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">{{ member.role|title }}</p>
+                        </div>
+                    </div>
+                    {% if user_membership.role in 'owner,admin' and member.role != 'owner' %}
+                    <form method="post" action="{% url 'team_remove_member' team_id=team.pk member_id=member.pk %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500 hover:text-red-700 text-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Actions</h2>
+
+            <div class="space-y-3">
+                <a href="{% url 'team_usage' team_id=team.pk %}" class="block w-full text-center px-4 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-chart-bar mr-2"></i> View Usage
+                </a>
+                {% if user_membership.role != 'owner' %}
+                <a href="{% url 'team_leave' team_id=team.pk %}" class="block w-full text-center px-4 py-3 border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Leave Team
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Team Info</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                    <span class="font-medium">Owner:</span> {{ team.owner.username }}
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                    <span class="font-medium">Your Role:</span> {{ user_membership.role|title }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

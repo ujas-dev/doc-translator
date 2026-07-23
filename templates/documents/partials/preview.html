@@ -1,0 +1,44 @@
+{% if status == 'completed' and output_file %}
+    {% if '.pdf' in output_file %}
+        <iframe src="{{ output_file }}" class="w-full" style="height: 600px;" frameborder="0"></iframe>
+    {% elif '.docx' in output_file %}
+        <div class="p-8 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                <i class="fas fa-file-word text-blue-500 text-2xl"></i>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">DOCX file ready for download</p>
+            <a href="{% url 'document-job-download' job_id=job_id %}" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-lg inline-flex items-center">
+                <i class="fas fa-download mr-2"></i> Download
+            </a>
+        </div>
+    {% else %}
+        <div class="p-8 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
+            </div>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">File ready for download</p>
+            <a href="{% url 'document-job-download' job_id=job_id %}" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-lg inline-flex items-center">
+                <i class="fas fa-download mr-2"></i> Download
+            </a>
+        </div>
+    {% endif %}
+{% elif status == 'processing' or status == 'queued' %}
+    <div class="flex flex-col items-center justify-center py-20">
+        <div class="w-16 h-16 mb-4 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+        <p class="text-gray-600 dark:text-gray-400">Processing your document...</p>
+    </div>
+{% elif status == 'failed' %}
+    <div class="flex flex-col items-center justify-center py-20">
+        <div class="w-16 h-16 mb-4 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center">
+            <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+        </div>
+        <p class="text-red-600 dark:text-red-400">Processing failed</p>
+    </div>
+{% else %}
+    <div class="flex flex-col items-center justify-center py-20">
+        <div class="w-16 h-16 mb-4 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <i class="fas fa-file text-gray-400 text-2xl"></i>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400">No preview available</p>
+    </div>
+{% endif %}

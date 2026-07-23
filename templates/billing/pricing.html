@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block title %}Pricing - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Simple, transparent pricing</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400">Choose the plan that fits your needs. Upgrade or downgrade anytime.</p>
+        {% if user.is_authenticated %}
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Your current plan: <span class="font-semibold text-primary-600 dark:text-primary-400">{{ current_plan|title }}</span></p>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Free -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border {% if current_plan == 'free' %}border-primary-500 ring-2 ring-primary-200 dark:ring-primary-800{% else %}border-gray-200 dark:border-gray-700{% endif %} p-6 relative">
+            {% if current_plan == 'free' %}
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">CURRENT PLAN</span>
+            </div>
+            {% endif %}
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Free</h3>
+            <div class="mb-4">
+                <span class="text-4xl font-bold text-gray-900 dark:text-white">$0</span>
+                <span class="text-gray-500 dark:text-gray-400">/month</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Perfect for trying out Doc Translator.</p>
+            <ul class="space-y-3 mb-6 text-sm">
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> 5 documents/month
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> 10 pages max
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> TXT & DOCX
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> 5 languages
+                </li>
+                <li class="flex items-center text-gray-400 dark:text-gray-500">
+                    <i class="fas fa-times text-gray-300 dark:text-gray-600 mr-2"></i> No glossary
+                </li>
+                <li class="flex items-center text-gray-400 dark:text-gray-500">
+                    <i class="fas fa-times text-gray-300 dark:text-gray-600 mr-2"></i> No API access
+                </li>
+            </ul>
+            {% if current_plan == 'free' %}
+            <button disabled class="w-full bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed">
+                Current Plan
+            </button>
+            {% else %}
+            <button class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-lg transition-colors">
+                Downgrade
+            </button>
+            {% endif %}
+        </div>
+
+        <!-- Pro -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border-2 {% if current_plan == 'pro' %}border-green-500 ring-2 ring-green-200 dark:ring-green-800{% else %}border-primary-500{% endif %} p-6 relative">
+            {% if current_plan == 'pro' %}
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">CURRENT PLAN</span>
+            </div>
+            {% else %}
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span class="bg-primary-600 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
+            </div>
+            {% endif %}
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Pro</h3>
+            <div class="mb-4">
+                <span class="text-4xl font-bold text-gray-900 dark:text-white">$19</span>
+                <span class="text-gray-500 dark:text-gray-400">/month</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For individuals and freelancers.</p>
+            <ul class="space-y-3 mb-6 text-sm">
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Unlimited documents
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> 50 pages/document
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> All formats (PDF, DOCX, XLSX...)
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> All languages
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Glossary support
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Translation memory
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> API access
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Priority processing
+                </li>
+            </ul>
+            {% if current_plan == 'pro' %}
+            <button disabled class="w-full bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed">
+                Current Plan
+            </button>
+            {% elif current_plan == 'free' %}
+            <a href="{% url 'billing-checkout' 'pro' %}" class="block w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors text-center">
+                Upgrade to Pro
+            </a>
+            {% else %}
+            <a href="{% url 'billing-portal' %}" class="block w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors text-center">
+                Downgrade to Pro
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Team -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border {% if current_plan == 'team' %}border-primary-500 ring-2 ring-primary-200 dark:ring-primary-800{% else %}border-gray-200 dark:border-gray-700{% endif %} p-6 relative">
+            {% if current_plan == 'team' %}
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">CURRENT PLAN</span>
+            </div>
+            {% endif %}
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Team</h3>
+            <div class="mb-4">
+                <span class="text-4xl font-bold text-gray-900 dark:text-white">$49</span>
+                <span class="text-gray-500 dark:text-gray-400">/month</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For small teams and agencies.</p>
+            <ul class="space-y-3 mb-6 text-sm">
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Everything in Pro
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> 5 team members
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Shared glossary
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Shared translation memory
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Webhook support
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Batch processing
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> QA scoring
+                </li>
+            </ul>
+            {% if current_plan == 'team' %}
+            <button disabled class="w-full bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed">
+                Current Plan
+            </button>
+            {% elif current_plan == 'enterprise' %}
+            <a href="{% url 'billing-portal' %}" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-lg transition-colors text-center">
+                Downgrade
+            </a>
+            {% else %}
+            <a href="{% url 'billing-checkout' 'team' %}" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-4 rounded-lg transition-colors text-center">
+                Upgrade to Team
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Enterprise -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border {% if current_plan == 'enterprise' %}border-primary-500 ring-2 ring-primary-200 dark:ring-primary-800{% else %}border-gray-200 dark:border-gray-700{% endif %} p-6 relative">
+            {% if current_plan == 'enterprise' %}
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">CURRENT PLAN</span>
+            </div>
+            {% endif %}
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Enterprise</h3>
+            <div class="mb-4">
+                <span class="text-4xl font-bold text-gray-900 dark:text-white">Custom</span>
+            </div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">For organizations with custom needs.</p>
+            <ul class="space-y-3 mb-6 text-sm">
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Everything in Team
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Unlimited members
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Self-hosted option
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> SSO / SAML
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Audit logs
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> SLA guarantee
+                </li>
+                <li class="flex items-center text-gray-700 dark:text-gray-300">
+                    <i class="fas fa-check text-green-500 mr-2"></i> Dedicated support
+                </li>
+            </ul>
+            {% if current_plan == 'enterprise' %}
+            <button disabled class="w-full bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-400 font-semibold py-2.5 px-4 rounded-lg cursor-not-allowed">
+                Current Plan
+            </button>
+            {% else %}
+            <button class="w-full bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-100 text-white dark:text-gray-900 font-semibold py-2.5 px-4 rounded-lg transition-colors">
+                Contact Sales
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

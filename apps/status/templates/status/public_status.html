@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Service Status - DocTranslator{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Service Status</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Real-time health monitoring</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            {% if overall == 'healthy' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">
+                    <i class="fas fa-check-circle mr-1.5"></i> All Systems Operational
+                </span>
+            {% elif overall == 'degraded' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200">
+                    <i class="fas fa-exclamation-triangle mr-1.5"></i> Partial System Outage
+                </span>
+            {% elif overall == 'down' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">
+                    <i class="fas fa-times-circle mr-1.5"></i> Major Outage
+                </span>
+            {% else %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                    <i class="fas fa-question-circle mr-1.5"></i> Status Unknown
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
+        {% for svc in services %}
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center
+                    {% if svc.status == 'healthy' %}bg-green-100 dark:bg-green-900/50
+                    {% elif svc.status == 'degraded' %}bg-yellow-100 dark:bg-yellow-900/50
+                    {% elif svc.status == 'down' %}bg-red-100 dark:bg-red-900/50
+                    {% else %}bg-gray-100 dark:bg-gray-700{% endif %}">
+                    <i class="fas {{ svc.icon }} text-sm
+                        {% if svc.status == 'healthy' %}text-green-600 dark:text-green-400
+                        {% elif svc.status == 'degraded' %}text-yellow-600 dark:text-yellow-400
+                        {% elif svc.status == 'down' %}text-red-600 dark:text-red-400
+                        {% else %}text-gray-400 dark:text-gray-500{% endif %}"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ svc.label }}</p>
+                    {% if svc.latency_ms is not None %}
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Latency: {{ svc.latency_ms }}ms</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                {% if svc.error_message %}
+                    <span class="text-xs text-red-500 dark:text-red-400 max-w-xs truncate" title="{{ svc.error_message }}">{{ svc.error_message|truncatechars:60 }}</span>
+                {% endif %}
+                {% if svc.status == 'healthy' %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300">
+                        Operational
+                    </span>
+                {% elif svc.status == 'degraded' %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300">
+                        Degraded
+                    </span>
+                {% elif svc.status == 'down' %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300">
+                        Down
+                    </span>
+                {% else %}
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+                        Unknown
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <p class="text-xs text-gray-400 dark:text-gray-500 mt-4 text-center">
+        Page auto-refreshes every 30 seconds
+    </p>
+</div>
+
+<meta http-equiv="refresh" content="30">
+{% endblock %}

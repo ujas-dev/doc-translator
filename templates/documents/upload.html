@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Translate Document - Doc Translator{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Translate Your Document</h1>
+        <p class="text-gray-600 dark:text-gray-400">Upload a document and get a professional translation in seconds.</p>
+    </div>
+
+    <!-- Upload Form -->
+    <div id="upload-area" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-2 border-dashed border-gray-300 dark:border-gray-600 p-12 text-center hover:border-primary-500 dark:hover:border-primary-400 transition-colors cursor-pointer" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" name="source_file" class="hidden" accept=".txt,.docx,.pdf,.xlsx,.pptx,.html,.csv,.md,.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp" onchange="handleFileSelect(this)">
+        <div id="upload-placeholder">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center">
+                <i class="fas fa-cloud-upload-alt text-primary-600 dark:text-primary-400 text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Drop your file here</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">or click to browse</p>
+            <p class="text-xs text-gray-400 dark:text-gray-500">Supports: PDF, DOCX, TXT, XLSX, PPTX, HTML, CSV, Markdown, Images &bull; Max 50MB</p>
+        </div>
+        <div id="file-preview" class="hidden">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                <i class="fas fa-file-alt text-green-600 dark:text-green-400 text-2xl"></i>
+            </div>
+            <h3 id="file-name" class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-1"></h3>
+            <p id="file-size" class="text-sm text-gray-500 dark:text-gray-400 mb-4"></p>
+            <button onclick="clearFile()" class="text-sm text-red-500 hover:text-red-600">
+                <i class="fas fa-times mr-1"></i> Remove
+            </button>
+        </div>
+    </div>
+
+    <!-- Translation Options -->
+    <div id="translation-options" class="hidden mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="fas fa-cog mr-2 text-primary-600"></i> Translation Settings
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Source Language</label>
+                <select id="source-lang" class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="auto">Auto-detect</option>
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="es">Spanish</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ar">Arabic</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Target Language</label>
+                <select id="target-lang" class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="hi">Hindi</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="es">Spanish</option>
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="zh">Chinese</option>
+                    <option value="ar">Arabic</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Output Format</label>
+                <select id="output-format" class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="">Same as source</option>
+                    <option value="pdf">PDF</option>
+                    <option value="docx">DOCX</option>
+                    <option value="txt">TXT</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Translation Style</label>
+                <select id="style-mode" class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                    <option value="fluid">Fluid (Natural)</option>
+                    <option value="faithful">Faithful (Literal)</option>
+                    <option value="creative">Creative (Marketing)</option>
+                    <option value="formal">Formal (Business)</option>
+                    <option value="casual">Casual (Informal)</option>
+                </select>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" id="bilingual" class="w-4 h-4 text-primary-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500">
+                <label for="bilingual" class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">Bilingual Output</label>
+                <span class="ml-2 text-xs text-gray-500 dark:text-gray-400">(Source + Translation)</span>
+            </div>
+            <div class="flex items-end">
+                <button onclick="startTranslation()" id="translate-btn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-language mr-2"></i> Translate Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress -->
+    <div id="progress-area" class="hidden mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <div class="flex items-center mb-4">
+            <div class="animate-spin w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full mr-3"></div>
+            <h3 id="progress-title" class="text-lg font-semibold text-gray-900 dark:text-white">Processing...</h3>
+        </div>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-2">
+            <div id="progress-bar" class="bg-primary-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <p id="progress-text" class="text-sm text-gray-500 dark:text-gray-400"></p>
+    </div>
+
+    <!-- Result -->
+    <div id="result-area" class="hidden mt-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+        <div class="text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                <i class="fas fa-check text-green-600 dark:text-green-400 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Translation Complete!</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-6">Your translated document is ready for download.</p>
+            <div class="flex justify-center space-x-4">
+                <a id="download-btn" href="#" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-6 rounded-lg transition-colors inline-flex items-center">
+                    <i class="fas fa-download mr-2"></i> Download
+                </a>
+                <button onclick="resetForm()" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2.5 px-6 rounded-lg transition-colors">
+                    <i class="fas fa-redo mr-2"></i> Translate Another
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/upload.js' %}"></script>
+{% endblock %}

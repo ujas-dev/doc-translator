@@ -1,0 +1,71 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: doc-translator-nginx
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "${DOC_TRANSLATOR_NGINX_PORT:-80}:80"
+      - "${DOC_TRANSLATOR_NGINX_SSL_PORT:-443}:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./staticfiles:/app/staticfiles:ro
+      - ./media:/app/media:ro
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    networks:
+      - doc-translator-internal
+
+  web:
+    env_file: .env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  celery-worker:
+    env_file: .env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  celery-beat:
+    env_file: .env
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    volumes:
+      - doc-translator-pgdata:/var/lib/postgresql/data/pgdata
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - doc-translator-redis:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  doc-translator-pgdata:
+    driver: local
+  doc-translator-redis:
+    driver: local
