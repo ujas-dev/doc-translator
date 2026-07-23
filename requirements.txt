@@ -23,6 +23,6 @@ openpyxl>=3.1
 python-pptx>=0.6.21
 beautifulsoup4>=4.12
 structlog>=24.1
-sentry-sdk>=2.14
+sentry-sdk>=2.66.1
 django-allauth>=65.0
 stripe>=7.0
